@@ -2,15 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, ToastController } from '@ionic/angular';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { GoalService } from '../services/goal.service';
-// import { GoalsPage } from '../goals/goals'
 
 @Component({
 	selector: 'app-set-goals',
 	templateUrl: './set-goals.page.html',
 	styleUrls: ['./set-goals.page.scss'],
 })
-export class SetGoalsPage implements OnInit {
 
+export class SetGoalsPage implements OnInit {
 
 	myGoals: FormGroup;
 	msg: string;

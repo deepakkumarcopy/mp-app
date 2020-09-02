@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { ExpenseService } from '../services/expense.service';
-// import { EditExpensePage } from '../edit-expense/edit-expense';
-// import { HomePage } from '../home/home';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-budget-expense',
@@ -13,16 +12,22 @@ import { ExpenseService } from '../services/expense.service';
 export class BudgetExpensePage implements OnInit {
 
 	budgetExpenses;
-	// budgetName = this.navParams.data['name'];
+	budgetName: any;
+	budget: any;
 
 	constructor(
 		public navCtrl: NavController,
-		// public navParams: NavParams,
+		public route: Router,
 		private expenseProvider: ExpenseService
 	) {
+		if (this.route.getCurrentNavigation().extras.state) {
+			this.budget = this.route.getCurrentNavigation().extras.state.item;
+			console.log(this.budget)
+		}
+		this.budgetName = this.budget.name;
 		expenseProvider.getExpenseDetail().subscribe((data) => {
-			// let budgetId = this.navParams.data['goals_id'];
-			// this.budgetExpenses = this.filterExpenses(budgetId, data);
+			let budgetId = this.budget.goals_id;
+			this.budgetExpenses = this.filterExpenses(budgetId, data);
 		});
 	}
 

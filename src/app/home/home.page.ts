@@ -60,7 +60,6 @@ export class HomePage implements OnInit {
 	) {
 		expenseProvider.getExpenseDetail().subscribe((data) => {
 			this.expenses = this.sortExpensesByDate(data);
-			console.log(this.expenses)
 			this.totalExps = this.getTotalSpentByBudget(data);
 			goalProvider.getGoals().subscribe((data) => {
 				this.goals = this.removeExpiredBudget(data);
@@ -73,6 +72,15 @@ export class HomePage implements OnInit {
 		this.firestore.collection('expenses').valueChanges().subscribe(expenses => {
 			this.expenses = this.sortExpensesByDate(expenses);
 			this.loadedExpenses = expenses;
+		});
+
+		this.expenseListRef = this.expenseProvider.getExpenseList("expenseId").valueChanges();
+		this.expenseListRef.subscribe(val => {
+			let amountarray: number[] = [];
+			val.map((obj) => {
+				amountarray.push(obj.amount);
+			});
+			this.totalamount = amountarray.reduce((a, b) => +a + +b, +0); // prefixing '+' before numbers to sumup
 		});
 	}
 
@@ -137,27 +145,17 @@ export class HomePage implements OnInit {
 		this.navCtrl.navigateRoot('set-goals');
 	}
 
-
-	//add up total expenses
-	ionViewDidLoad() {
-		//get observable for the firestore collection based on id
-		this.expenseListRef = this.expenseProvider.getExpenseList("expenseId").valueChanges();
-		this.expenseListRef.subscribe(val => {
-			let amountarray: number[] = [];
-			val.map((obj) => {
-				amountarray.push(obj.amount);
-			});
-			this.totalamount = amountarray.reduce((a, b) => +a + +b, +0); // prefixing '+' before numbers to sumup
-		});
-	}
-
 	goToViewExpense() {
 		this.navCtrl.navigateRoot('goals');
 	}
 
 	// view expenses that is in the budget
 	viewBudgetExpenses(budget) {
-		this.navCtrl.navigateRoot('budget-expense', budget);
+		this.navCtrl.navigateForward('budget-expense', {
+			state: {
+				item: budget
+			}
+		});
 	}
 
 	viewExpense(date, amount, category, desc, remark, expense, goals_id) {

@@ -21,16 +21,16 @@ export class DeleteGoalPage implements OnInit {
 		public route: Router,
 		public goalProvider: GoalService
 	) {
-		let myGoals: any;
+		let myGoal: any;
 		if (this.route.getCurrentNavigation().extras.state) {
-			myGoals = this.route.getCurrentNavigation().extras.state.item;
+			myGoal = this.route.getCurrentNavigation().extras.state.item;
 		}
 		this.myGoals = fb.group({
-			'name': myGoals.name,
-			'amount': myGoals.amount,
-			'startDate': myGoals.startDate,
-			'endDate': myGoals.endDate,
-			'optional': myGoals.optional
+			'name': myGoal.name,
+			'amount': myGoal.amount,
+			'startDate': myGoal.startDate,
+			'endDate': myGoal.endDate,
+			'optional': myGoal.optional
 		});
 	}
 
