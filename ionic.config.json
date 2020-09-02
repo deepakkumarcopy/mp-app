@@ -1,0 +1,7 @@
+{
+  "name": "MPApp",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
